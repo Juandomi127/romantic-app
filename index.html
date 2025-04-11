@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>¿Quieres salir conmigo?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #btnSi {
+            background: #4CAF50;
+            color: white;
+        }
+        #btnNo {
+            background: #ff5252;
+            color: white;
+            position: relative;
+        }
+        #btnNo:hover {
+            background: #ff0000;
+        }
+        .hidden {
+            display: none;
+        }
+        .hearts {
+            position: absolute;
+            font-size: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Quieres salir conmigo? ❤️</h1>
+        <button id="btnSi" onclick="mostrarFelicidades()">¡Sí!</button>
+        <button id="btnNo" onmouseover="huir()">No</button>
+    </div>
+
+    <script>
+        let intentos = 0;
+        
+        function huir() {
+            const btnNo = document.getElementById('btnNo');
+            intentos++;
+            
+            // Mueve el botón a una posición aleatoria
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = x + 'px';
+            btnNo.style.top = y + 'px';
+            
+            // Cambia el texto después de 2 intentos
+            if (intentos >= 2) {
+                btnNo.textContent = ["¡Por favor!", "¡Elige Sí!", "😢"][Math.floor(Math.random() * 3)];
+            }
+            
+            // Desaparece después de 5 intentos
+            if (intentos >= 5) {
+                btnNo.classList.add('hidden');
+                crearCorazones();
+                setTimeout(() => {
+                    alert("¡La opción 'No' ha desaparecido! Solo queda decir que SÍ 💖");
+                }, 500);
+            }
+        }
+        
+        function mostrarFelicidades() {
+            document.body.innerHTML = `
+                <div class="container" style="animation: pulse 1s infinite;">
+                    <h1>¡Gracias por aceptar! 💕</h1>
+                    <p>Nos vemos pronto...</p>
+                    <div id="hearts-container"></div>
+                </div>
+            `;
+            crearCorazones();
+        }
+        
+        function crearCorazones() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'hearts';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                document.body.appendChild(heart);
+                
+                // Elimina el corazón después de la animación
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
